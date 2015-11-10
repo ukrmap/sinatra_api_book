@@ -51,7 +51,7 @@ end
 І ми можемо використовувати наш сервіс для обчислення результату цілочисельного ділення двох цілих чисел. Перейдіть в інше вікно (або вкладку) терміналу і виконайте:
 
     $ curl -i -X GET "localhost:4567/api/v1/ratio/23/4"
-    HTTP/1.1 200 OK 
+    HTTP/1.1 200 OK
     Content-Type: text/html;charset=utf-8
     Content-Length: 1
     X-Xss-Protection: 1; mode=block
@@ -95,7 +95,7 @@ end
 Ну, ми чекали цього з початку глави, давайте ділити на нуль.
 
     $ curl -i -X GET "localhost:4567/api/v1/ratio/1/0"
-    HTTP/1.1 500 Internal Server Error 
+    HTTP/1.1 500 Internal Server Error
     Content-Type: text/plain
     Content-Length: 4563
     Server: WEBrick/1.3.1 (Ruby/2.0.0/2014-02-24)
@@ -168,7 +168,7 @@ end
 Перезапустіть сервіс і знову виконайте
 
     $ curl -i -X GET "localhost:4567/api/v1/ratio/1/0"
-    HTTP/1.1 500 Internal Server Error 
+    HTTP/1.1 500 Internal Server Error
     Content-Type: text/html;charset=utf-8
     Content-Length: 30
     X-Xss-Protection: 1; mode=block
@@ -201,7 +201,7 @@ end
 Перезапустити сервіс ще раз і знову виконайте
 
     # curl -i -X GET "localhost:4567/api/v1/ratio/1/0"
-    HTTP/1.1 500 Internal Server Error 
+    HTTP/1.1 500 Internal Server Error
     Content-Type: text/html;charset=utf-8
     Content-Length: 58
     X-Xss-Protection: 1; mode=block
@@ -273,7 +273,7 @@ end
 
 Тепер ми знаємо, що користувач повідомляється належним чином, якщо відбувається збій. Але ми також хочемо знати про виникнення помилок.
 
-## <a name="logging-request-params-and-http-response-code"></a>Логирование параметрів запиту та коду стану HTTP відповіді
+## <a name="logging-request-params-and-http-response-code"></a>Логування параметрів запиту та коду стану HTTP відповіді
 
 Для логування доступу до сервісу ми будемо використовувати `Rack :: CommonLogger`, це один з корисних` middleware`, які поставляеются разом з `rack`. Подивіться на оновлений `service.rb`:
 
@@ -460,4 +460,4 @@ end
 
 ## <a name="summary"></a>Резюме
 
-У цій главі ми зробили короткий огляд, настройки логування в `sinatra` і налаштування повідомлень про помилки по електронній пошті використовуючи gem [rusen](https://github.com/Moove-it/rusen). Існує схожий gem для `rails` - [exception_notification](https://github.com/smartinez87/exception_notification). Ми також дуже коротко обговорили інтеграцію з сервісом відслідковування помилок на прикладі `Airbrake`.
+У цій главі ми зробили короткий огляд, налаштування логування в `sinatra` і налаштування повідомлень про помилки по електронній пошті використовуючи gem [rusen](https://github.com/Moove-it/rusen). Існує схожий gem для `rails` - [exception_notification](https://github.com/smartinez87/exception_notification). Ми також дуже коротко обговорили інтеграцію з сервісом відслідковування помилок на прикладі `Airbrake`.
