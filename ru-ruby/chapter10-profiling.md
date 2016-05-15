@@ -118,14 +118,14 @@ end
 Посмотрите в окно терминала, где запущен сервис Zip-кодов:
 
     $ %self      total      self      wait     child     calls  name
-       6.54     15.003     0.991    14.012     0.000        1   <Class::IO>#select 
-       0.33      0.050     0.050     0.000     0.000       90   Array#join 
-       0.13      0.020     0.020     0.000     0.000       14   PG::Connection#async_exec 
-       0.05      0.008     0.008     0.000     0.000       99   Module#module_eval 
-       0.03      0.005     0.005     0.000     0.000        1   PG::Connection#initialize 
-       0.03      0.005     0.004     0.000     0.001        1   ActiveRecord::QueryMethods#where! 
-       0.02      0.002     0.002     0.000     0.000        3   ActiveModel::Validations#errors 
-       0.02      0.079     0.002     0.000     0.077      215  *Array#each 
+       6.54     15.003     0.991    14.012     0.000        1   <Class::IO>#select
+       0.33      0.050     0.050     0.000     0.000       90   Array#join
+       0.13      0.020     0.020     0.000     0.000       14   PG::Connection#async_exec
+       0.05      0.008     0.008     0.000     0.000       99   Module#module_eval
+       0.03      0.005     0.005     0.000     0.000        1   PG::Connection#initialize
+       0.03      0.005     0.004     0.000     0.001        1   ActiveRecord::QueryMethods#where!
+       0.02      0.002     0.002     0.000     0.000        3   ActiveModel::Validations#errors
+       0.02      0.079     0.002     0.000     0.077      215  *Array#each
 
        ...
 
@@ -165,7 +165,7 @@ end
 class Comment
   belongs_to :post
 
-  validates :post, presence: true
+  validates_presence_of :post
 
   def post_id=(value)
     write_attribute(:post_id, value)
