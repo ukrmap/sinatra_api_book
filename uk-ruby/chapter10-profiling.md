@@ -5,7 +5,7 @@
 
 Одним із способів розібратися в тому які частини додатки є найбільш повільними є профілювання.
 
-## <a name="ruby-built-in-profiler">Вбудований `ruby` Profiler
+## <a name="ruby-built-in-profiler"></a>Вбудований `ruby` Profiler
 
 Ви можете використовувати вбудований `ruby` Profiler з опціей` -r profile` з командного рядка:
 
