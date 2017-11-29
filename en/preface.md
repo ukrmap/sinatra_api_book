@@ -29,7 +29,7 @@ In this book we will follow `REST` conventions.
 
 In this book, we will not compare different technologies that can be used to create web services.
 
-We will focus on general architecture of web-service. We will use ruby language, it is concise and understandable. Also we will use `sinatra` framework and related `ruby` gems.
+We will focus on general architecture of web-service. We will use ruby programing language, it's concise and understandable. Also we will use `sinatra` framework and related `ruby` gems.
 
 To start reading the book, you should have a `ruby` (1.9 or later), and RubyGems installed on your system.
 
