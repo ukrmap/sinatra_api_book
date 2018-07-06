@@ -62,7 +62,7 @@ error(ActiveRecord::RecordNotFound) { [404, '{"message":"Record not found"}'] }
 
 # Respond with error message at unexpected exception (HTTP 500 status code will be added by sinatra).
 error { '{"message":"An internal server error occurred. Please try again later."}' }
-``` 
+```
 
 ## <a name="422-unprocessable-entity"></a>422 - Unprocessable Entity
 
@@ -131,7 +131,7 @@ resource 'ZipCode' do
       expect(new_zip_code.attributes.values_at(*valid_attributes.keys.map(&:to_s))).to eq valid_attributes.values
     end
 
-    example "Create Zip Code with invalid params", document: nil do
+    example "Create Zip Code with invalid params", document: false do
       do_request(zip_code: { zip: "1234" })
 
       expect(status).to eq 422
@@ -154,7 +154,7 @@ resource 'ZipCode' do
         zip_code.attributes.values_at('id', 'zip', 'street_name', 'building_number', 'city', 'state'))
     end
 
-    example "Read Zip Code that does not exist", document: nil do
+    example "Read Zip Code that does not exist", document: false do
       do_request(zip: '12345-6789')
 
       expect(status).to eq 404
@@ -185,7 +185,7 @@ resource 'ZipCode' do
       expect(zip_code.reload.attributes.values_at(*valid_attributes.keys.map(&:to_s))).to eq valid_attributes.values
     end
 
-    example "Update Zip Code that does not exist", document: nil do
+    example "Update Zip Code that does not exist", document: false do
       do_request(id: 800)
 
       expect(status).to eq 404
@@ -205,7 +205,7 @@ resource 'ZipCode' do
       expect(ZipCode.where(id: zip_code.id)).to be_empty
     end
 
-    example "Delete Zip Code that does not exist", document: nil do
+    example "Delete Zip Code that does not exist", document: false do
       do_request(id: 800)
 
       expect(status).to eq 404
@@ -231,7 +231,7 @@ gem 'pg'
 gem 'activerecord'
 gem 'protected_attributes'
 gem 'sinatra-activerecord'
-# Parameter Validation & Type Coercion for Sinatra 
+# Parameter Validation & Type Coercion for Sinatra
 gem 'sinatra-param'
 
 group :development, :test do
@@ -376,7 +376,7 @@ resource 'ZipCode' do
       expect(new_zip_code.attributes.values_at(*valid_attributes.keys.map(&:to_s))).to eq valid_attributes.values
     end
 
-    example "Create Zip Code with invalid params", document: nil do
+    example "Create Zip Code with invalid params", document: false do
       do_request(zip_code: { zip: "1234" })
 
       expect(status).to eq 422
@@ -384,13 +384,13 @@ resource 'ZipCode' do
       expect(new_zip_code).to be_nil
     end
 
-    example "Create Zip Code provide not Hash zip_code params", document: nil do
+    example "Create Zip Code provide not Hash zip_code params", document: false do
       do_request(zip_code: "STRING")
 
       expect(status).to eq 422
     end
 
-    example "Create Zip Code do not provide zip_code params", document: nil do
+    example "Create Zip Code do not provide zip_code params", document: false do
       do_request
 
       expect(status).to eq 400
@@ -412,14 +412,14 @@ resource 'ZipCode' do
         zip_code.attributes.values_at('id', 'zip', 'street_name', 'building_number', 'city', 'state'))
     end
 
-    example "Read Zip Code that does not exist", document: nil do
+    example "Read Zip Code that does not exist", document: false do
       do_request(zip: '12345-6789')
 
       expect(status).to eq 404
       expect(response_body).to eq '{"message":"Record not found"}'
     end
 
-    example "Read Zip Code provide invalid format zip", document: nil do
+    example "Read Zip Code provide invalid format zip", document: false do
       do_request(zip: '1234')
       json_response = JSON.parse(response_body, symbolize_names: true)
 
@@ -452,14 +452,14 @@ resource 'ZipCode' do
       expect(zip_code.reload.attributes.values_at(*valid_attributes.keys.map(&:to_s))).to eq valid_attributes.values
     end
 
-    example "Update Zip Code that does not exist", document: nil do
+    example "Update Zip Code that does not exist", document: false do
       do_request(id: 800, zip_code: valid_attributes)
 
       expect(status).to eq 404
       expect(response_body).to eq '{"message":"Record not found"}'
     end
 
-    example "Update Zip Code provide to big ID number", document: nil do
+    example "Update Zip Code provide to big ID number", document: false do
       do_request(id: 3000000000, zip_code: valid_attributes)
       json_response = JSON.parse(response_body, symbolize_names: true)
 
@@ -468,13 +468,13 @@ resource 'ZipCode' do
       expect(json_response[:errors][:id]).to eq 'Parameter cannot be greater than 2147483647'
     end
 
-    example "Update Zip Code provide not Hash zip_code params", document: nil do
+    example "Update Zip Code provide not Hash zip_code params", document: false do
       do_request(id: zip_code.id, zip_code: "STRING")
 
       expect(status).to eq 200
     end
 
-    example "Update Zip Code do not provide zip_code params", document: nil do
+    example "Update Zip Code do not provide zip_code params", document: false do
       do_request(id: zip_code.id)
       json_response = JSON.parse(response_body, symbolize_names: true)
 
@@ -496,14 +496,14 @@ resource 'ZipCode' do
       expect(ZipCode.where(id: zip_code.id)).to be_empty
     end
 
-    example "Delete Zip Code that does not exist", document: nil do
+    example "Delete Zip Code that does not exist", document: false do
       do_request(id: 800)
 
       expect(status).to eq 404
       expect(response_body).to eq '{"message":"Record not found"}'
     end
 
-    example "Delete Zip Code provide to big ID number", document: nil do
+    example "Delete Zip Code provide to big ID number", document: false do
       do_request(id: 3000000000)
       json_response = JSON.parse(response_body, symbolize_names: true)
 

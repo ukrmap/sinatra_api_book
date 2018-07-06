@@ -294,7 +294,7 @@ Create Zip-code: request and response.
     "building_number":"77779","city":"Ovaside","state":"South Dakota",
     "created_at":"2015-02-09T15:20:42.440Z","updated_at":"2015-02-09T15:20:42.440Z"}}
 
-Functional for JSON-serialization is included in gem `activerecord`. For a more configurable options, you can use [active_model_serializers](https://github.com/rails-api/active_model_serializers) or [jbuilder](https://github.com/rails/jbuilder) (which is significantly slower).
+Functional for JSON-serialization is included in gem `activerecord`. For a more configurable options, you can use [active_model_serializers](https://github.com/rails-api/active_model_serializers) or [JBuilder](https://github.com/rails/jbuilder).
 
 For parse JSON from the body of `POST` or `PUT` HTTP request we may use `Rack::PostBodyContentTypeParser` `middleware` from [rack-contrib](https://github.com/rack/rack-contrib).
 
@@ -477,7 +477,7 @@ That is it! (for a while). We created web service that works but does not includ
 
 ## <a name="summary"></a>Summary
 
-We used method `to_json` of `activerecord` for JSON-serialization and `middleware` from [rack-contrib]('https://github.com/rack/rack-contrib') for deserialization (parsing) JSON params from POST/PUT HTTP requests.
+We used method `to_json` of `activerecord` for JSON-serialization and `middleware` from [rack-contrib](https://github.com/rack/rack-contrib) for deserialization (parsing) JSON params from POST/PUT HTTP requests.
 
 We also created `acceptance` tests. Almost each test checks correctness of specific JSON-attributes and we use `JSON.parse` in every test. You probably should have helper-method for this, here is useful article: [Rails API Testing Best Practices](http://matthewlehner.net/rails-api-testing-guidelines/) (despite of "Rails" in title, article contains instructions that can be used in every `rspec` + `rack-test` tests).
 

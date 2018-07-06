@@ -294,7 +294,7 @@ end
     "building_number":"77779","city":"Ovaside","state":"South Dakota",
     "created_at":"2015-02-09T15:20:42.440Z","updated_at":"2015-02-09T15:20:42.440Z"}}
 
-Функционал для JSON-сериализации включён в гем `activerecord`. Для большего количества возможностей настройки, вы можете использовать [active_model_serializers](https://github.com/rails-api/active_model_serializers) или [JBuilder](https://github.com/rails/jbuilder) (который существенно медленнее).
+Функционал для JSON-сериализации включён в гем `activerecord`. Для большего количества возможностей настройки, вы можете использовать [active_model_serializers](https://github.com/rails-api/active_model_serializers) или [JBuilder](https://github.com/rails/jbuilder).
 
 Для разбора JSON из тела `POST` или `PUT` HTTP запроса, мы можем использовать `Rack::PostBodyContentTypeParser` `middleware` из [rack-contrib](https://github.com/rack/rack-contrib).
 
@@ -477,7 +477,7 @@ end
 
 ## <a name="summary"></a>Резюме
 
-Мы использовали метод `to_json` из `activerecord` для JSON-сериализации и `middleware` из [rack-contrib]('https://github.com/rack/rack-contrib') для десериализации (разбора) JSON параметров из POST/PUT HTTP-запросов.
+Мы использовали метод `to_json` из `activerecord` для JSON-сериализации и `middleware` из [rack-contrib](https://github.com/rack/rack-contrib) для десериализации (разбора) JSON параметров из POST/PUT HTTP-запросов.
 
 Мы также создали `acceptance` тесты. Почти каждый тест проверяет правильность конкретных JSON-атрибутов, и мы используем `JSON.parse` в каждом тесте. Вы, наверное, должны иметь вспомогательный-метод для этого, вот полезная статья: [Rails API Testing Best Practices](http://matthewlehner.net/rails-api-testing-guidelines/) (несмотря на "Rails" в названии, статья содержит инструкции, которые могут быть использованы в каждом `rspec` + `rack-test` тестах).
 

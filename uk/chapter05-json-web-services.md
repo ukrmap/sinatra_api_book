@@ -294,7 +294,7 @@ end
     "building_number":"77779","city":"Ovaside","state":"South Dakota",
     "created_at":"2015-02-09T15:20:42.440Z","updated_at":"2015-02-09T15:20:42.440Z"}}
 
-Функціонал для JSON-серіалізації включений в гем `activerecord`. Для більшої кількості можливостей налаштування, ви можете використовувати [active_model_serializers](https://github.com/rails-api/active_model_serializers) або [JBuilder](https://github.com/rails/jbuilder) (який суттєво повільніше).
+Функціонал для JSON-серіалізації включений в гем `activerecord`. Для більшої кількості можливостей налаштування, ви можете використовувати [active_model_serializers](https://github.com/rails-api/active_model_serializers) або [JBuilder](https://github.com/rails/jbuilder).
 
 Для розбору JSON з тіла `POST` або` PUT` HTTP запиту, ми можемо використовувати `Rack::PostBodyContentTypeParser`` middleware` з [rack-contrib](https://github.com/rack/rack-contrib).
 
@@ -477,7 +477,7 @@ end
 
 ## <a name="summary"></a>Резюме
 
-Ми використали метод `to_json` з `activerecord` для JSON-серіалізациі і `middleware` з [rack-contrib]('https://github.com/rack/rack-contrib') для десеріалізациі (розбору) JSON параметрів з POST/PUT HTTP-запитів.
+Ми використали метод `to_json` з `activerecord` для JSON-серіалізациі і `middleware` з [rack-contrib](https://github.com/rack/rack-contrib) для десеріалізациі (розбору) JSON параметрів з POST/PUT HTTP-запитів.
 
 Ми також створили `acceptance` тести. Майже кожен тест перевіряє правильність конкретних JSON-атрибутів, і ми використовуємо `JSON.parse` в кожному тесті. Ви, напевно, повинні мати допоміжний-метод для цього, ось корисна стаття: [Rails API Testing Best Practices](http://matthewlehner.net/rails-api-testing-guidelines/) (незважаючи на "Rails" в назві, стаття містить інструкції, які можуть бути використані в будь-яких `rspec` + `rack-test` тестах).
 

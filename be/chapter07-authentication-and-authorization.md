@@ -1,23 +1,23 @@
-Chapter #7. Authentication and Authorization
-============================================
+Кіраўнік #7. Аўтэнтыфікацыя і аўтарызацыя
+=========================================
 
-We need to think about security and access rights, currently Zip-codes web-service is open to public - anyone can create new Zip-code and update or delete existent. Let's create a user authorization using a web service `users` created in chapter #4. All registered users will be able to create new Zip-code and only admin users will be able update or delete existent Zip-code.
+Мы павінны думаць пра бяспеку і правах доступу, у цяперашні час вэб-сэрвіс Zip-кодаў адкрыты для грамадскасці - любы можа стварыць новы Zip-код і абнавіць або выдаліць зусім. Давайце створым аўтарызацыю карыстальнікаў выкарыстоўваючы вэб-сэрвіс `users`, створаны ў главе №4. Усе зарэгістраваныя карыстальнікі змогуць ствараць новыя ZIP-коды і толькі карыстач-адміністратар зможа абнавіць або выдаліць існуючы Zip-код.
 
-Web service client should provide a token in HTTP header for authentication. Zip-codes web-service will use this same token to get user identity from `users` web-service. So internally, Zip-code web-service performs (it will) one more HTTP request - this causes minor performance overhead. You must take into account the costs of meeting the internal HTTP requests in the development of service architecture.
+Кліент вэб-сэрвісу Zip-кодаў павінен перадаць токен ў HTTP загалоўку для аўтэнтыфікацыі. Вэб-сэрвіс Zip-кодаў будзе выкарыстоўваць гэты ж токен, каб атрымаць ідэнтыфікатар карыстальніка з вэб-сэрвісу `users`. Так ўнутрана, вэб-сэрвіс Zip-кодаў выконвае (будзе выконваць) яшчэ адзін HTTP запыт - гэта выклікае нязначную страту прадукцыйнасці. Вы павінны прымаць да ўвагі затраты на выкананне ўнутраных HTTP запытаў пры распрацоўцы архітэктуры сэрвісу.
 
-## <a name="remote-calls-to-users-service"></a>Remote calls to `users` service
+## <a name="remote-calls-to-users-service"></a>Выдаленыя выклікі да `users` сэрвісу
 
-Recall `users` service that was created in chapter #4 - we plan to use it for authentication in Zip-codes service. We will do some investigation about how we will use `users` service from `ruby` code.
+Памятаеце `users` сэрвіс, які быў створаны ў главе №4 - мы плануем выкарыстоўваць яго для ідэнтыфікацыі ў сэрвісе Zip-кодаў. Мы зробім некаторы даследаванне аб тым, як мы будзем выкарыстоўваць `users` сэрвіс з `ruby` кода.
 
-We need HTTP-client library like [faraday](https://github.com/lostisland/faraday). Install it please.
+Нам патрэбны HTTP-кліент гем, напрыклад [faraday](https://github.com/lostisland/faraday). Усталюйце яго калі ласка.
 
     $ gem install faraday
 
-Then run please `users` web-service on port 4545 (run in terminal from folder `users`)
+Затым запусціце ласка вэб-сэрвіс `users` на порце 4545 (выканайце ў тэрмінале з папкі `users`)
 
     $ ruby service.rb -p 4545
 
-Open new terminal tab and start `irb` session (type `irb` and press `Enter`). Here is our session:
+Адкрыйце новую ўкладку тэрмінала і запусціце `irb` сесію (надрукуйце `irb` і націсніце `Enter`). Вось наша сесія:
 
     $ irb
     > require "faraday"
@@ -30,7 +30,7 @@ Open new terminal tab and start `irb` session (type `irb` and press `Enter`). He
     > response.body
     => "{\"user\":{\"type\":\"RegularUser\"}}"
 
-We have used correct token for `"RegularUser"`. Let's try an incorrect token.
+Мы выкарыстоўвалі карэктны токен для `"RegularUser"`. Давайце паспрабуем некарэктны токен.
 
     $ irb
     > require "faraday"
@@ -43,11 +43,11 @@ We have used correct token for `"RegularUser"`. Let's try an incorrect token.
     > response.body
     => "{\"message\":\"Invalid or expired token\"}"
 
-We can implement same logic in Zip-codes service. HTTP `"Authorization"` header is available in `sinatra` as `request.env['HTTP_AUTHORIZATION']`.
+Мы можам рэалізаваць тую ж логіку ў сэрвісе Zip-кодаў. HTTP `"Authorization"` загаловак даступны ў `sinatra` як `request.env['HTTP_AUTHORIZATION']`.
 
-## <a name="remote-authentication"></a>Remote authentication
+## <a name="remote-authentication"></a>Аддаленая аўтэнтыфікацыя
 
-We will use authorization gem for Ruby on Rails - [cancan](https://github.com/ryanb/cancan) and `sinatra` wrapper for it - [sinatra-can](https://github.com/shf/sinatra-can). We will need gem [fakeweb](https://github.com/facewatch/fakeweb) to emulate requests to `users` service in tests. Please add this three gems into `Gemfile`:
+Мы будзем выкарыстоўваць гем аўтарызацыі для Ruby on Rails - [cancan](https://github.com/ryanb/cancan) і `sinatra` абгортку для яго - [sinatra-can](https://github.com/shf/ sinatra-can). Нам патрэбны будзе гем [fakeweb](https://github.com/facewatch/fakeweb) для эмуляцыі запытаў да `users` сэрвісу ў тэстах. Калі ласка, дадайце тры гэтых гема ў `Gemfile`:
 
 ```ruby
 source 'https://rubygems.org'
@@ -86,11 +86,11 @@ group :test do
 end
 ```
 
-And run (from folder `zip_codes` in terminal)
+І выканайце (з папкі `zip_codes` ў тэрмінале)
 
     $ bundle install
 
-We will use helper methods from `sinatra-can` to set up `current_user` and `current_ ability`. We also need to add error handlers for 401 and 403. Please update file `application.rb`.
+Мы будзем выкарыстоўваць дапаможныя метады з `sinatra-can`, каб наладзіць `current_user` і `current_ability`. Мы таксама павінны дадаць апрацоўшчыкі памылак для 401 і 403. Калі ласка, абновіце файл `application.rb`.
 
 ```ruby
 require 'bundler/setup'
@@ -139,7 +139,7 @@ error { '{"message":"An internal server error occurred. Please try again later."
 
 ![](../static/images/cancan.jpg)
 
-And check `ability` in file `app/controllers/zip_codes_controller.rb` with helper method `authorize!` from `sinatra-can`.
+І праверка `ability` ў файле `app/controllers/zip_codes_controller.rb` дапаможным методод `authorize!` з `sinatra-can`.
 
 ```ruby
 post "/api/v1/zip_codes.json" do
@@ -175,11 +175,11 @@ delete "/api/v1/zip_codes/:id.json" do
 end
 ```
 
-## <a name="emulate-remote-authentication-in-tests"></a>Emulate remote authentication in tests
+## <a name="emulate-remote-authentication-in-tests"></a>Эмуляцыя выдаленай ідэнтыфікацыі ў тэстах
 
-We need to fix `acceptance` tests. There are few failed tests - all due to public access attempt to protected actions - 403 error on attempt to modify Zip-code.
+Мы павінны выправіць `acceptance` тэсты. Ёсць некалькі тэстаў, якія не праходзяць - усё з-за спробы публічнага доступу да абароненых дзеянням - 403 памылка пры спробе змяніць Zip-код.
 
-First, you chould be notified if application performs external HTTP requests in tests (in our case to `users` service). Edit the file `spec/spec_helper.rb` - add the line `FakeWeb.allow_net_connect = false`
+Па-першае, вы павінны быць апавешчаныя, калі дадатак выконвае знешнія запыты HTTP ў тэстах (у нашым выпадку да `users` сэрвісу). Зменіце файл `spec/spec_helper.rb` - дадайце радок `FakeWeb.allow_net_connect = false`
 
 ```ruby
 ENV['RACK_ENV'] = 'test'
@@ -225,22 +225,22 @@ RspecApiDocumentation.configure do |config|
 end
 ```
 
-In tests we should emulate situation when client uses token. When client does not transfer OAuth token - application should not perform request to `users` service.
+У тэстах мы павінны эмуляваць сітуацыю, калі кліент выкарыстоўвае токен. Калі кліент не перадае OAuth токен - прыкладанне не павінна выконваць запыт да `users` сэрвісу.
 
 ```ruby
-header "Authorization", 'OAuth abcdefgh12345678'
+header 'Authorization', 'OAuth abcdefgh12345678'
 ```
 
-Method [header](https://github.com/zipmark/rspec_api_documentation#header) is defined in gem `rspec_api_documentation`.
+Метад [header](https://github.com/zipmark/rspec_api_documentation#header) вызначаны ў геме `rspec_api_documentation`.
 
-And simulate HTTP response from `users` service
+І імітуючы HTTP адказ з `users` сэрвісу
 
 ```ruby
 FakeWeb.register_uri(:get, "http://localhost:4545/api/v1/users/me.json",
   body: '{"user":{"id":1,"type":"AdminUser"}}')
 ```
 
-Here is updated version of file `spec/acceptance/zip_codes_spec.rb`
+Вось абноўленая версія файла `spec/acceptance/zip_codes_spec.rb`
 
 ```ruby
 require "spec_helper"
@@ -539,11 +539,11 @@ resource 'ZipCode' do
 end
 ```
 
-We have tested all cases when admin user, regular user or public user uses Zip-codes service API. Now we can do refactoring with confidence that service will work as expected after changes (if tests will pass after changes).
+Мы пратэставалі ўсе выпадкі, калі карыстальнік Admin, звычайны карыстальнік ці публічны карыстальнік выкарыстоўвае API сэрвісу Zip-кодаў. Цяпер мы можам зрабіць рэфактарынг з упэўненасцю, што сэрвіс будзе працаваць належным чынам пасля зменаў (калі пасля зменаў пройдуць тэсты).
 
-## <a name="refactoring"></a>Refactoring
+## <a name="refactoring"></a>Рэфактарынг
 
-We can move the `ability` in a separate class - `app/models/ability.rb`, `cancan` (`sinatra-can`) uses this class by default.
+Мы можам перанесці `ability` ў асобны клас - `app/models/ability.rb`, `cancan` (`sinatra-can`) выкарыстоўвае гэты клас па змаўчанні.
 
 ```ruby
 class Ability
@@ -558,7 +558,7 @@ class Ability
 end
 ```
 
-And remove `ability` block from file `application.rb`
+І выдаліце блок `ability` з файла `application.rb`
 
 ```ruby
 require 'bundler/setup'
@@ -599,31 +599,31 @@ end
 error { '{"message":"An internal server error occurred. Please try again later."}' }
 ```
 
-Also we can use helper method `load_and_authorize!` from `sinatra-can`. This allows to find record by `params[:id]` and check accessibility in one line.
+Таксама мы можам выкарыстоўваць дапаможны метад `load_and_authorize!` з `sinatra-can`. Гэта дазваляе знайсці запіс па `params[:id]` і праверыць даступнасць ў адным радку.
 
-So we can write this:
+Такім чынам, мы можам напісаць так:
 
 ```ruby
 load_and_authorize! ZipCode
 ```
 
-Instead this:
+Замест гэтага:
 
 ```ruby
 @zip_code = ZipCode.find(params[:id])
 authorize! :update, @zip_code
 ```
 
-Or this:
+Ці гэта:
 
 ```ruby
 @zip_code = ZipCode.find(params[:id])
 authorize! :destroy, @zip_code
 ```
 
-But how `sinatra-can` will guess for which `ability` to authorize (`update` or `destroy`)? `load_and_authorize!` checks `ability` according to the HTTP Request Method: `PUT` for `:update`, `DELETE` for `:destroy`. Also note that `load_and_authorize!` initializes instance variable (name prefixed with `@`).
+ле як `sinatra-can` здагадаецца, для якіх `ability` правяраць доступ (`update` або `destroy`)? `load_and_authorize` правярае `ability` ў адпаведнасці з метадам запыту: `PUT` для `:update`, `DELETE` для `:destroy`. Таксама зьвярніце ўвагу, што `load_and_authorize!` ініцыялізуе зменную асобніка (імя з прэфіксам `@`).
 
-Refactored version of `app/controllers/zip_codes_controller.rb`
+Абноўленая версія `app/controllers/zip_codes_controller.rb`
 
 ```ruby
 post "/api/v1/zip_codes.json" do
@@ -656,21 +656,21 @@ delete "/api/v1/zip_codes/:id.json" do
 end
 ```
 
-if record not found `sinatra-can` calls `error(404)` (almost the same as `halt(404)`). We need to add JSON-404 error as well as in the interception `ActiveRecord::RecordNotFound`.
+Калі запіс не знойдзена `sinatra-can` выклікае `error(404)` (амаль таксама, што `halt(404)`). Мы павінны дадаць JSON-паведамленне пра памылку 404 гэтак жа як пры перахопе `ActiveRecord::RecordNotFound`.
 
-In file `application.rb` replace line
+У файле `application.rb` заменіце радок
 
 ```ruby
 error(ActiveRecord::RecordNotFound) { [404, '{"message":"Record not found"}'] }`
 ```
 
-with
+на
 
 ```ruby
 error(404, ActiveRecord::RecordNotFound) { [404, '{"message":"Record not found"}'] }
 ```
 
-Here is full `application.rb`
+KUось поўны `application.rb`
 
 ```ruby
 require 'bundler/setup'
@@ -706,10 +706,10 @@ end
 error { '{"message":"An internal server error occurred. Please try again later."}' }
 ```
 
-Don't forget to run tests.
+Не забудзьцеся правесці тэсты.
 
-## <a name="summary"></a>Summary
+## <a name="summary"></a>Рэзюмэ
 
-We have built remote authentication with `users` web-service using HTTP client library [faraday](https://github.com/lostisland/faraday). We used [fakeweb](https://github.com/facewatch/fakeweb) for testing remote authentication (emulation of response from `users` web-service).
+Мы стварылі выдаленую аўтэнтыфікацыю з дапамогай вэб-сэрвісу `users` выкарыстоўваючы HTTP-кліент бібліятэку [faraday](https://github.com/lostisland/faraday). Мы выкарыстоўвалі [fakeweb](https://github.com/facewatch/fakeweb) для тэставання выдаленай аўтэнтыфікацыі (эмуляцыя адказу ад вэб-сэрвісу `users`).
 
-We used [sinatra-can](https://github.com/shf/sinatra-can) (`sinatra` wrapper for [cancan](https://github.com/ryanb/cancan)) for authorization. We have extended Zip-codes service with 401 and 403 HTTP status codes (and error messages).
+Мы выкарыстоўвалі [sinatra-can](https://github.com/shf/sinatra-can) (`sinatra` абгортка для [cancan](https://github.com/ryanb/cancan)) для аўтарызацыі. Мы пашырылі сэрвіс Zip-кодаў з 401 і 403 кодамі стану HTTP (і паведамленнямі пра памылкі).

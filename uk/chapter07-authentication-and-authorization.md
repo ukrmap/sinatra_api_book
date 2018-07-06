@@ -47,7 +47,7 @@
 
 ## <a name="remote-authentication"></a>Дистанційна аутентифікація
 
-Ми будемо використовувати гем авторизації для Ruby On Rails - [cancan](https://github.com/ryanb/cancan) і `sinatra` обгортку для нього - [sinatra-can](https://github.com/shf/ sinatra-can). Нам потрібен буде гем [fakeweb](https://github.com/facewatch/fakeweb) для емуляції запитів до `users` сервісу в тестах. Будь ласка, додайте три цих гема в `Gemfile`:
+Ми будемо використовувати гем авторизації для Ruby on Rails - [cancan](https://github.com/ryanb/cancan) і `sinatra` обгортку для нього - [sinatra-can](https://github.com/shf/ sinatra-can). Нам потрібен буде гем [fakeweb](https://github.com/facewatch/fakeweb) для емуляції запитів до `users` сервісу в тестах. Будь ласка, додайте три цих гема в `Gemfile`:
 
 ```ruby
 source 'https://rubygems.org'
@@ -61,7 +61,7 @@ gem 'protected_attributes'
 gem 'sinatra-activerecord'
 gem 'sinatra-param'
 
-# Simple, but flexible HTTP client library, with support for multiple backends. 
+# Simple, but flexible HTTP client library, with support for multiple backends.
 gem 'faraday'
 
 # CanCan wrapper for Sinatra. (CanCan is Authorization Gem for Ruby on Rails)
@@ -263,7 +263,7 @@ resource 'ZipCode' do
     let(:valid_attributes) { attributes_for(:zip_code) }
     let(:new_zip_code) { ZipCode.last }
 
-    context "Public User", document: nil do
+    context "Public User", document: false do
       example "Create Zip Code" do
         do_request(zip_code: valid_attributes)
         json_response = JSON.parse(response_body, symbolize_names: true)
@@ -289,7 +289,7 @@ resource 'ZipCode' do
         expect(new_zip_code.attributes.values_at(*valid_attributes.keys.map(&:to_s))).to eq valid_attributes.values
       end
 
-      example "Create Zip Code with invalid params", document: nil do
+      example "Create Zip Code with invalid params", document: false do
         do_request(zip_code: { zip: "1234" })
 
         expect(status).to eq 422
@@ -297,13 +297,13 @@ resource 'ZipCode' do
         expect(new_zip_code).to be_nil
       end
 
-      example "Create Zip Code provide not Hash zip_code params", document: nil do
+      example "Create Zip Code provide not Hash zip_code params", document: false do
         do_request(zip_code: "STRING")
 
         expect(status).to eq 422
       end
 
-      example "Create Zip Code do not provide zip_code params", document: nil do
+      example "Create Zip Code do not provide zip_code params", document: false do
         do_request
 
         expect(status).to eq 400
@@ -311,7 +311,7 @@ resource 'ZipCode' do
       end
     end
 
-    context 'Admin User', document: nil do
+    context 'Admin User', document: false do
       header "Authorization", 'OAuth abcdefgh12345678'
       before { FakeWeb.register_uri(:get, "http://localhost:4545/api/v1/users/me.json",
         body: '{"user":{"id":1,"type":"AdminUser"}}') }
@@ -343,14 +343,14 @@ resource 'ZipCode' do
           zip_code.attributes.values_at('id', 'zip', 'street_name', 'building_number', 'city', 'state'))
       end
 
-      example "Read Zip Code that does not exist", document: nil do
+      example "Read Zip Code that does not exist", document: false do
         do_request(zip: '12345-6789')
 
         expect(status).to eq 404
         expect(response_body).to eq '{"message":"Record not found"}'
       end
 
-      example "Read Zip Code provide invalid format zip", document: nil do
+      example "Read Zip Code provide invalid format zip", document: false do
         do_request(zip: '1234')
         json_response = JSON.parse(response_body, symbolize_names: true)
 
@@ -360,7 +360,7 @@ resource 'ZipCode' do
       end
     end
 
-    context 'Regular User (authenticated user with type "RegularUser")', document: nil do
+    context 'Regular User (authenticated user with type "RegularUser")', document: false do
       header "Authorization", 'OAuth abcdefgh12345678'
       before { FakeWeb.register_uri(:get, "http://localhost:4545/api/v1/users/me.json",
         body: '{"user":{"id":1,"type":"RegularUser"}}') }
@@ -375,7 +375,7 @@ resource 'ZipCode' do
       end
     end
 
-    context "Admin User", document: nil do
+    context "Admin User", document: false do
       header "Authorization", 'OAuth abcdefgh12345678'
       before { FakeWeb.register_uri(:get, "http://localhost:4545/api/v1/users/me.json",
         body: '{"user":{"id":1,"type":"AdminUser"}}') }
@@ -404,7 +404,7 @@ resource 'ZipCode' do
     let(:zip_code) { create(:zip_code) }
     let(:valid_attributes) { attributes_for(:zip_code) }
 
-    context "Public User", document: nil do
+    context "Public User", document: false do
       example "Update Zip Code" do
         do_request(id: zip_code.id, zip_code: valid_attributes)
         json_response = JSON.parse(response_body, symbolize_names: true)
@@ -414,7 +414,7 @@ resource 'ZipCode' do
       end
     end
 
-    context 'Regular User (authenticated user with type "RegularUser")', document: nil do
+    context 'Regular User (authenticated user with type "RegularUser")', document: false do
       header "Authorization", 'OAuth abcdefgh12345678'
       before { FakeWeb.register_uri(:get, "http://localhost:4545/api/v1/users/me.json",
         body: '{"user":{"id":1,"type":"RegularUser"}}') }
@@ -443,14 +443,14 @@ resource 'ZipCode' do
         expect(zip_code.reload.attributes.values_at(*valid_attributes.keys.map(&:to_s))).to eq valid_attributes.values
       end
 
-      example "Update Zip Code that does not exist", document: nil do
+      example "Update Zip Code that does not exist", document: false do
         do_request(id: 800, zip_code: valid_attributes)
 
         expect(status).to eq 404
         expect(response_body).to eq '{"message":"Record not found"}'
       end
 
-      example "Update Zip Code provide to big ID number", document: nil do
+      example "Update Zip Code provide to big ID number", document: false do
         do_request(id: 3000000000, zip_code: valid_attributes)
         json_response = JSON.parse(response_body, symbolize_names: true)
 
@@ -459,13 +459,13 @@ resource 'ZipCode' do
         expect(json_response[:errors][:id]).to eq 'Parameter cannot be greater than 2147483647'
       end
 
-      example "Update Zip Code provide not Hash zip_code params", document: nil do
+      example "Update Zip Code provide not Hash zip_code params", document: false do
         do_request(id: zip_code.id, zip_code: "STRING")
 
         expect(status).to eq 200
       end
 
-      example "Update Zip Code do not provide zip_code params", document: nil do
+      example "Update Zip Code do not provide zip_code params", document: false do
         do_request(id: zip_code.id)
         json_response = JSON.parse(response_body, symbolize_names: true)
 
@@ -481,7 +481,7 @@ resource 'ZipCode' do
 
     let(:zip_code) { create(:zip_code) }
 
-    context "Public User", document: nil do
+    context "Public User", document: false do
       example "Delete Zip Code" do
         do_request(id: zip_code.id)
         json_response = JSON.parse(response_body, symbolize_names: true)
@@ -492,7 +492,7 @@ resource 'ZipCode' do
       end
     end
 
-    context 'Regular User (authenticated user with type "RegularUser")', document: nil do
+    context 'Regular User (authenticated user with type "RegularUser")', document: false do
       header "Authorization", 'OAuth abcdefgh12345678'
       before { FakeWeb.register_uri(:get, "http://localhost:4545/api/v1/users/me.json",
         body: '{"user":{"id":1,"type":"RegularUser"}}') }
@@ -519,14 +519,14 @@ resource 'ZipCode' do
         expect(ZipCode.where(id: zip_code.id)).to be_empty
       end
 
-      example "Delete Zip Code that does not exist", document: nil do
+      example "Delete Zip Code that does not exist", document: false do
         do_request(id: 800)
 
         expect(status).to eq 404
         expect(response_body).to eq '{"message":"Record not found"}'
       end
 
-      example "Delete Zip Code provide to big ID number", document: nil do
+      example "Delete Zip Code provide to big ID number", document: false do
         do_request(id: 3000000000)
         json_response = JSON.parse(response_body, symbolize_names: true)
 
@@ -607,14 +607,14 @@ error { '{"message":"An internal server error occurred. Please try again later."
 load_and_authorize! ZipCode
 ```
 
-Instead this:
+Замість цього:
 
 ```ruby
 @zip_code = ZipCode.find(params[:id])
 authorize! :update, @zip_code
 ```
 
-Or this:
+Або це:
 
 ```ruby
 @zip_code = ZipCode.find(params[:id])

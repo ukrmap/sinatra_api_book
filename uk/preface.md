@@ -37,8 +37,8 @@ HTTP також є протоколом. `REST` (скор. Від англ. Repr
 
 ## <a name="technologies"></a>Приклади коду
 
-Ви можете знайти приклади коду, використовувані в книзі на [GitHub](https://github.com/shhavel/service-oriented-architecture-in-practice).
+Ви можете знайти приклади коду, використовувані в книзі на [GitHub](https://github.com/ukrmap/sinatra_api_examples).
 
 ## <a name="acknowledgments"></a>Подяки
 
-Я хочу подякувати менеджерам і всім інженерам компанії [Facewatch](https://www.facewatch.co.uk/cms/). Ця книга існує завдяки команді Facewatch та [Aejis](http://aejis.eu).
+Я хочу подякувати менеджерам і всім інженерам компанії [Facewatch](https://www.facewatch.co.uk/). Ця книга існує завдяки команді Facewatch та [Aejis](http://aejis.eu).

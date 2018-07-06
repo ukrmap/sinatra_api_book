@@ -37,8 +37,8 @@ Data serialization format - mostly JSON.
 
 ## <a name="technologies"></a>Code examples
 
-You can find code examples used in book on [github](https://github.com/shhavel/service-oriented-architecture-in-practice).
+You can find code examples used in book on [github](https://github.com/ukrmap/sinatra_api_examples).
 
 ## <a name="acknowledgments"></a>Acknowledgments
 
-I want to thank the managers and all the engineers of [Facewatch](https://www.facewatch.co.uk/cms/). This book exists because of the Facewatch and [Aejis](http://aejis.eu) team.
+I want to thank the managers and all the engineers of [Facewatch](https://www.facewatch.co.uk/). This book exists because of the Facewatch and [Aejis](http://aejis.eu) team.

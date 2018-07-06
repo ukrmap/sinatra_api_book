@@ -1,1 +1,1 @@
-# Practical Service Oriented Architecture in Ruby
+# How to create HTTP API using Ruby and Sinatra

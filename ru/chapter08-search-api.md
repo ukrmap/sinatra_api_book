@@ -130,7 +130,7 @@ end
 
     $ rake db:create_migration NAME=add_indexes_to_zip_codes
 
-И отредактируйте созданную миграцию (новый файл в папке `db/migraions`)
+И отредактируйте созданную миграцию (новый файл в папке `db/migrations`)
 
 ```ruby
 class AddIndexesToZipCodes < ActiveRecord::Migration
@@ -150,7 +150,7 @@ class AddIndexesToZipCodes < ActiveRecord::Migration
 end
 ```
 
-Выполните миграцию в окружении `development` (по умолчанию) и окружении 'test`
+Выполните миграцию в окружении `development` (по умолчанию) и окружении `test`
 
     $ rake db:migrate
     $ RACK_ENV=test rake db:migrate
@@ -178,7 +178,7 @@ end
 
     SELECT  "zip_codes".* FROM "zip_codes"
     WHERE ("zip_codes"."city" = 'Thompsonfurt' AND "zip_codes"."state" = 'Kansas') LIMIT 20;
-    
+
     SELECT  "zip_codes".* FROM "zip_codes"
     WHERE ("zip_codes"."zip" ILIKE '40664%') LIMIT 20;
 
@@ -252,7 +252,7 @@ end
 Отметим также, что вопрос о возможном применении индекса может зависеть от установки базы данных (не только версии), например, если база данных не использует стандартную "C" локаль, и мы хотим использовать BTREE индекс для `LIKE` запросов мы должны создать индекс определив класс оператора, см. [классы операторов и операторных семейств](http://www.postgresql.org /docs/9.4/static/indexes-opclass.html).
 
 ```ruby
-execute "CREATE INDEX index_zip_codes_on_zip ON zip_codes (postcode varchar_pattern_ops);" 
+execute "CREATE INDEX index_zip_codes_on_zip ON zip_codes (postcode varchar_pattern_ops);"
 ```
 
 ## <a name="summary"></a>Резюме

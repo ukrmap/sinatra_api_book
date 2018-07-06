@@ -47,7 +47,7 @@ Also the player should be able to make a move by sending a `PUT` request to the 
     -----------
        |   |
 
-Service makes its own move - computer puts "O" on empty cell (if game is not finished after player move) and notifies about game status: "In Progress", "Won", "Lost", "Draw". Note that the player provides a game parameters, in this case it is GET parameters (part of URL), but actually should be POST parameters (provided in HTTP request body) - length of URL is limited depending on web server, so in general we should use POST. We stay for awhile with GET for some simplicity.
+Service makes its own move - computer puts "0" on empty cell (if game is not finished after player move) and notifies about game status: "In Progress", "Won", "Lost", "Draw". Note that the player provides a game parameters, in this case it is GET parameters (part of URL), but actually should be POST parameters (provided in HTTP request body) - length of URL is limited depending on web server, so in general we should use POST. We stay for awhile with GET for some simplicity.
 
 Game parameters - it is key-value store that contains only one key - "move", value - is a number of cell in which player wants to place a cross (character "X"). Cell should be empty before making a move. Cells are numbered from 0 till 9 (this is not the rules of the game, this is our representation of the board to be able to make a move):
 
@@ -570,11 +570,11 @@ describe "Games", type: :request do
         Game ##{game.id}
         Status: In Progress
 
-           |   |  
+           |   |
         -----------
-           |   |  
+           |   |
         -----------
-           |   |  
+           |   |
       GAME
     end
   end
@@ -591,9 +591,9 @@ describe "Games", type: :request do
 
            |   | X
         -----------
-         O | X |  
+         O | X |
         -----------
-         O |   |  
+         O |   |
       GAME
     end
 
@@ -616,9 +616,9 @@ describe "Games", type: :request do
 
            | O | X
         -----------
-         O | X |  
+         O | X |
         -----------
-         X |   |  
+         X |   |
       GAME
     end
 

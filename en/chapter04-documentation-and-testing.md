@@ -192,7 +192,7 @@ resource "Users" do
     end
   end
 end
-``` 
+```
 
 Add please gem configuration into file `spec/spec_helper.rb`
 
@@ -248,11 +248,11 @@ Documentation in HTML format will be saved under folder `doc`. You should use te
 
 ## <a name="exclude-specific-test-examples-from-documentation"></a>Exclude Certain Test Examples from Documentation
 
-You can exclude certain test cases from the documentation with the option `document: nil`, for example:
+You can exclude certain test cases from the documentation with the option `document: false`, for example:
 
 ```ruby
 # This example does not fall into the documentation.
-example_request "no token - no user", document: nil do
+example_request "no token - no user", document: false do
   expect(status).to eq 403
   expect(response_body).to eq '{"message":"Access Forbidden"}'
 end

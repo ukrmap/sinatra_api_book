@@ -53,7 +53,7 @@ And fix acceptance tests for retrieve (get) action in file `spec/acceptance/zip_
 require "spec_helper"
 
 resource 'ZipCode' do
-  
+
   # tests for create (post) action
 
   get "/api/v1/zip_codes/:id.json" do
@@ -71,14 +71,14 @@ resource 'ZipCode' do
           zip_code.attributes.values_at('id', 'zip', 'street_name', 'building_number', 'city', 'state'))
       end
 
-      example "Read Zip Code that does not exist", document: nil do
+      example "Read Zip Code that does not exist", document: false do
         do_request(id: 8889)
 
         expect(status).to eq 404
         expect(response_body).to eq '{"message":"Record not found"}'
       end
 
-      example "Read Zip Code provide invalid format zip id", document: nil do
+      example "Read Zip Code provide invalid format zip id", document: false do
         do_request(id: 's1234')
         json_response = JSON.parse(response_body, symbolize_names: true)
 
@@ -88,7 +88,7 @@ resource 'ZipCode' do
       end
     end
 
-    context 'Regular User (authenticated user with type "RegularUser")', document: nil do
+    context 'Regular User (authenticated user with type "RegularUser")', document: false do
       header "Authorization", 'OAuth abcdefgh12345678'
       before { FakeWeb.register_uri(:get, "http://localhost:4545/api/v1/users/me.json",
         body: '{"user":{"id":1,"type":"RegularUser"}}') }
@@ -103,7 +103,7 @@ resource 'ZipCode' do
       end
     end
 
-    context "Admin User", document: nil do
+    context "Admin User", document: false do
       header "Authorization", 'OAuth abcdefgh12345678'
       before { FakeWeb.register_uri(:get, "http://localhost:4545/api/v1/users/me.json",
         body: '{"user":{"id":1,"type":"AdminUser"}}') }
@@ -175,7 +175,7 @@ require "active_resource"
 
 class ZipCode < ActiveResource::Base
   self.format = :json
-  self.include_root_in_json = true 
+  self.include_root_in_json = true
   self.site = "http://localhost:4567"
   self.prefix = "/api/v1/"
 end
@@ -187,10 +187,10 @@ Get Zip code from `http://localhost:4567/api/v1/zip_codes/401.json`
 
 ```ruby
 zip_code = ZipCode.find(401)
-zip_code.zip # => "63109" 
-zip_code.street_name # => "Candido Loop" 
-zip_code.building_number # => "897" 
-zip_code.city # => "New Hoyt" 
+zip_code.zip # => "63109"
+zip_code.street_name # => "Candido Loop"
+zip_code.building_number # => "897"
+zip_code.city # => "New Hoyt"
 zip_code.state # => "Utah"
 ```
 
@@ -231,7 +231,7 @@ Create Zip Code
 zip_code = ZipCode.create(zip: "82470-2132", street_name: "Micheal Street",
   building_number: "911", city: "South Madalyn", state: "Louisiana")
 
-zip_code.id # => 101187 
+zip_code.id # => 101187
 ```
 
 ## <a name="cors"></a>CORS Support

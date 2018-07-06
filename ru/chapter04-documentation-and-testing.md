@@ -192,7 +192,7 @@ resource "Users" do
     end
   end
 end
-``` 
+```
 
 Добавьте, пожалуйста, конфигурацию для гема в файл `spec/spec_helper.rb`
 
@@ -248,11 +248,11 @@ end
 
 ## <a name="exclude-specific-test-examples-from-documentation"></a>Исключение некоторых тестов из документации
 
-Вы можете исключить определенные тестовые примеры из документации с помощью опции `document: nil`, например:
+Вы можете исключить определенные тестовые примеры из документации с помощью опции `document: false`, например:
 
 ```ruby
 # This example does not fall into the documentation.
-example_request "no token - no user", document: nil do
+example_request "no token - no user", document: false do
   expect(status).to eq 403
   expect(response_body).to eq '{"message":"Access Forbidden"}'
 end
